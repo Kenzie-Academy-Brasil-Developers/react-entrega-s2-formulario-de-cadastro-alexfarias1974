@@ -13,52 +13,19 @@ import "../../index.css";
 import "./styles.css";
 import { P } from "../../components/ErrorMessage/styles";
 import { H2 } from "../../components/Titles/styles";
-
-const schema = yup.object().shape({
-  email: yup
-    .string()
-    .email()
-    .required("Campo obrigatório")
-    .email("Email Inválido!"),
-  password: yup.string().required("Campo obrigatório"),
-});
+import { useContext } from "react";
+import { schema as schemaLogin } from "../../Validations";
+import { UserContext } from "../../contexts/UserContext";
 
 const Home = () => {
-  useEffect(() => {
-    if (localStorage.getItem("@userToken") && localStorage.getItem("@userID")) {
-      navigate("/dashboard", { replace: true });
-    }
-  });
-
+  const { toRegister, loginData } = useContext(UserContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schemaLogin),
   });
-
-  const navigate = useNavigate();
-
-  const loginData = (data) => {
-    axios
-      .post("https://kenziehub.herokuapp.com/sessions", data)
-      .then((response) => {
-        console.log(response.data);
-        window.localStorage.clear();
-        window.localStorage.setItem("@userToken", response.data.token);
-        window.localStorage.setItem("@userID", response.data.user.id);
-        toast.success("Login efetuado com sucesso!");
-        navigate("/dashboard", { replace: true });
-      })
-      .catch((error) =>
-        toast.error("Email ou senha não cadastrados na nossa base!")
-      );
-  };
-
-  const toRegister = () => {
-    navigate("/register", { replace: true });
-  };
 
   return (
     <div>

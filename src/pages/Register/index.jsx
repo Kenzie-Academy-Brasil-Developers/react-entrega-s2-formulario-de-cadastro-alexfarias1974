@@ -16,61 +16,20 @@ import { P } from "../../components/ErrorMessage/styles";
 import { GrayButton } from "../../components/GrayButton/styles";
 import { Select } from "../../components/Select/styles";
 import { Button } from "../../components/Button/styles";
-
-const schema = yup.object({
-  name: yup
-    .string()
-    .required("Campo obrigatório")
-    .matches(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/, "Somente letras"),
-  email: yup.string().required("Campo obrigatório").email("Email inválido"),
-  password: yup
-    .string()
-    .required("Campo obrigatório.")
-    .matches(
-      /(?=^.{8,}$)((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
-      "Sua senha deverá conter no mínimo 8 caracteres, pelo menos uma letra minúscula, uma maiúscula, um número e um caractere especial."
-    ),
-  confirmPassword: yup
-    .string()
-    .required("Campo obrigatório")
-    .oneOf(
-      [yup.ref("password")],
-      "Esse campo deve possuir a mesma senha cadastrada no campo anterior"
-    ),
-  bio: yup.string().required("Campo obrigatório"),
-  contact: yup.string().required("Campo obrigatório."),
-  course_module: yup.string().required("Campo obrigatório"),
-});
+import { schemaRegister } from "../../Validations";
+import { UserContext } from "../../contexts/UserContext";
+import { useContext } from "react";
 
 const Register = () => {
-  useEffect(() => {
-    if (localStorage.getItem("@userToken") && localStorage.getItem("@userID")) {
-      navigate("/dashboard", { replace: true });
-    }
-  });
+  const { registerData, navigate } = useContext(UserContext);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schemaRegister),
   });
-
-  const navigate = useNavigate();
-
-  const loginData = (data) => {
-    axios
-      .post("https://kenziehub.herokuapp.com/users", data)
-      .then((response) => {
-        console.log(response.data);
-        toast.success("Usuário cadastrado com sucesso");
-        setTimeout(() => {
-          navigate("/", { replace: true });
-        }, 3000);
-      })
-      .catch((error) => toast.error("Alguma coisa deu errado"));
-  };
 
   const buttonBack = () => {
     navigate("/", { replace: true });
@@ -84,7 +43,7 @@ const Register = () => {
           Voltar
         </GrayButton>
       </div>
-      <FormRegister onSubmit={handleSubmit(loginData)}>
+      <FormRegister onSubmit={handleSubmit(registerData)}>
         <H2>Crie sua conta</H2>
         <p className="pMsgReg">Rápido e grátis, vamos nessa</p>
         <Label htmlFor="name">Nome</Label>
