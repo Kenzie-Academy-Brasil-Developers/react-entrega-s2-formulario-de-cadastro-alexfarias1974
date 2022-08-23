@@ -56,7 +56,7 @@ export const UlTechs = styled.ul`
   }
 
   li {
-    max-width: 70vw;
+    max-width: 95%;
     height: 48px;
     background-color: #121214;
 
