@@ -3,6 +3,7 @@ import "./App.css";
 import api from "./services/api";
 import RoutesKenzieHub from "./routes";
 import UserContextProvider from "./contexts/UserContext";
+import { TechsProvider } from "./contexts/Techs";
 
 function App() {
   useEffect(() => {
@@ -11,9 +12,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <UserContextProvider>
-          <RoutesKenzieHub />
-        </UserContextProvider>
+        <TechsProvider>
+          <UserContextProvider>
+            <RoutesKenzieHub />
+          </UserContextProvider>
+        </TechsProvider>
       </header>
     </div>
   );

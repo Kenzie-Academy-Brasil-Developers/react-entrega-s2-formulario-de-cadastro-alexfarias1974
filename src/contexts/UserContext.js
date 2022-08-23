@@ -1,33 +1,42 @@
-// import { useForm } from "react-hook-form";
-// import { FormLogin } from "../../components/FormLogin";
 import axios from "axios";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-// import { Label } from "../../components/Label/styles";
-// import { Button } from "../../components/Button/styles";
-// import { Input } from "../../components/Input/styles";
-// import "../../index.css";
-// import "./styles.css";
-// import { P } from "../../components/ErrorMessage/styles";
-// import { H2 } from "../../components/Titles/styles";
-// import Home from "../pages/Home";
 import { createContext } from "react";
+import { TechsContext } from "./Techs";
 
 export const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
   const navigate = useNavigate();
 
+  const { setTechs } = useContext(TechsContext);
+
   const [dataUserID, setDataUserID] = useState(null);
   const [dataUserModule, setDataUserModule] = useState(null);
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    if (localStorage.getItem("@userToken") && localStorage.getItem("@userID")) {
-      navigate("/dashboard", { replace: true });
+    const token = localStorage.getItem("@userToken");
+
+    if (token) {
+      axios
+        .get("https://kenziehub.herokuapp.com/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setUserData(response.data);
+          console.log(response);
+          setTechs(response.data.techs);
+          navigate("/dashboard", { replace: true });
+        })
+        .catch((error) => {
+          // console.log(error);
+        });
+    } else {
+      navigate("/", { replace: true });
     }
   }, []);
 

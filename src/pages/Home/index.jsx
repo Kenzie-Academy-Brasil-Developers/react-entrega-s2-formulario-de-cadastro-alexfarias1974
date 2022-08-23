@@ -1,11 +1,6 @@
 import { useForm } from "react-hook-form";
 import { FormLogin } from "../../components/FormLogin";
-import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
 import { Label } from "../../components/Label/styles";
 import { Button } from "../../components/Button/styles";
 import { Input } from "../../components/Input/styles";

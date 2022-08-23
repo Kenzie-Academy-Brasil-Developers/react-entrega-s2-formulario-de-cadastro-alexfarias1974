@@ -1,11 +1,6 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import axios from "axios";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import { Label } from "../../components/Label/styles";
 import { FormRegister } from "../../components/FormRegister/styles";
 import "../../index.css";

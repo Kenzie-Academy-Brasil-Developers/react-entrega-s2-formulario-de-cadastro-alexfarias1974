@@ -33,3 +33,8 @@ export const schemaRegister = yup.object({
   contact: yup.string().required("Campo obrigatório."),
   course_module: yup.string().required("Campo obrigatório"),
 });
+
+export const schemaAddData = yup.object().shape({
+  title: yup.string().required("Campo obrigatório"),
+  // status: yup.string().required("Campo obrigat")
+});

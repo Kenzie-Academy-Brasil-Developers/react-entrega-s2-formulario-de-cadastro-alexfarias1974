@@ -1,17 +1,24 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Dashboard } from "./styles";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "../../services/api";
 import "../Home/styles.css";
 import { GrayButton } from "../../components/GrayButton/styles";
 import { SectionUser } from "../../components/SectionUser/styles";
 import { Footer } from "../../components/Footer/styles";
 import { H2 } from "../../components/Titles/styles";
 import { UserContext } from "../../contexts/UserContext";
+import Modal from "../../components/Modal";
+import { TechsContext } from "../../contexts/Techs";
+import Vector from "../../../src/Vector.png";
+import { UlTechs } from "../../components/Techs/styles";
 
 const DashboardPage = () => {
+  const [showModal, setShowModal] = useState(false);
+
   const { userData, navigate } = useContext(UserContext);
+
+  const { techs } = useContext(TechsContext);
+
   const logout = () => {
     window.localStorage.clear();
     navigate("/", { replace: true });
@@ -33,12 +40,24 @@ const DashboardPage = () => {
           <p className="pMsgReg">{userData.course_module}</p>
         </SectionUser>
         <Footer>
-          <H2>Que pena! Estamos em desenvolvimento :(</H2>
-          <h3 className="h3Footer">
-            Nossa aplicação está em desenvolvimento, em breve teremos novidades.
-          </h3>
+          <h2>Tecnologias</h2>
+          <button type="button" onClick={() => setShowModal(true)}>
+            +
+          </button>
         </Footer>
+        <section>
+          <UlTechs>
+            {techs?.map((item) => (
+              <li>
+                <span>{item.title}</span>
+                <p>{item.status}</p>
+                <img src={Vector} alt="" />
+              </li>
+            ))}
+          </UlTechs>
+        </section>
       </div>
+      <Modal showModal={showModal} setShowModal={setShowModal} />
     </div>
   );
 };
