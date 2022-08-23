@@ -26,6 +26,8 @@ const DashboardPage = () => {
     setTimeout(() => {}, 3000);
   };
 
+  console.log(techs);
+
   return (
     <div>
       <div className="divDash">

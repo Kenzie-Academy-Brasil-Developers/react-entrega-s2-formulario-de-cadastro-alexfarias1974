@@ -32,9 +32,7 @@ const UserContextProvider = ({ children }) => {
           setTechs(response.data.techs);
           navigate("/dashboard", { replace: true });
         })
-        .catch((error) => {
-          // console.log(error);
-        });
+        .catch((error) => {});
     } else {
       navigate("/", { replace: true });
     }
