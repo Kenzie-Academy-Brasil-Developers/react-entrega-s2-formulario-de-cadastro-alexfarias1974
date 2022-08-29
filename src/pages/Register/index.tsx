@@ -12,20 +12,22 @@ import { GrayButton } from "../../components/GrayButton/styles";
 import { Select } from "../../components/Select/styles";
 import { Button } from "../../components/Button/styles";
 import { schemaRegister } from "../../Validations";
-import { UserContext } from "../../contexts/UserContext";
+import { UserContext, IRegisterDataProps } from "../../contexts/UserContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const { registerData, navigate } = useContext(UserContext);
+  const { registerData } = useContext(UserContext);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<IRegisterDataProps>({
     resolver: yupResolver(schemaRegister),
   });
 
+  const navigate = useNavigate();
   const buttonBack = () => {
     navigate("/", { replace: true });
   };
@@ -93,11 +95,10 @@ const Register = () => {
           placeholder="Opção de contato"
           {...register("contact")}
         />
-        <P>{errors.contato?.message}</P>
+        <P>{errors.contact?.message}</P>
 
         <Label htmlFor="modulo">Selecionar módulo</Label>
         <Select
-          type="text"
           id="modulo"
           placeholder="Escolha o módulo"
           {...register("course_module")}
@@ -107,7 +108,7 @@ const Register = () => {
           <option>Terceiro módulo (Introdução ao Backend)</option>
           <option>Quarto Módulo (Backend Avançado)</option>
         </Select>
-        <P>{errors.modulo?.message}</P>
+        <P>{errors.course_module?.message}</P>
 
         <Button type="submit">Cadastrar</Button>
       </FormRegister>

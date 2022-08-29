@@ -36,5 +36,4 @@ export const schemaRegister = yup.object({
 
 export const schemaAddData = yup.object().shape({
   title: yup.string().required("Campo obrigatório"),
-  // status: yup.string().required("Campo obrigat")
 });

@@ -10,7 +10,12 @@ import { P } from "../../components/ErrorMessage/styles";
 import { H2 } from "../../components/Titles/styles";
 import { useContext } from "react";
 import { schema as schemaLogin } from "../../Validations";
-import { UserContext } from "../../contexts/UserContext";
+import { UserContext, ILoginDataProps } from "../../contexts/UserContext";
+
+export interface IUser {
+  email: string;
+  password: string;
+}
 
 const Home = () => {
   const { toRegister, loginData } = useContext(UserContext);
@@ -18,7 +23,7 @@ const Home = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<ILoginDataProps>({
     resolver: yupResolver(schemaLogin),
   });
 

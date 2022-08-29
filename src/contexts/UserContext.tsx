@@ -1,20 +1,67 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+  createContext,
+} from "react";
 import { toast } from "react-toastify";
-import { createContext } from "react";
-import { TechsContext } from "./Techs";
+import { ITechs, TechsContext } from "./Techs";
 
-export const UserContext = createContext();
+export const UserContext = createContext<IContextProvProps>(
+  {} as IContextProvProps
+);
 
-const UserContextProvider = ({ children }) => {
+export interface IUserContextProvProps {
+  children: ReactNode;
+}
+
+export interface ILoginDataProps {
+  email: string;
+  password: string;
+}
+
+export interface IRegisterDataProps {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  bio: string;
+  contact: string;
+  course_module: string;
+}
+
+export interface IUserData {
+  id: string;
+  name: string;
+  email: string;
+  course_module: string;
+  bio: string;
+  contact: string;
+  techs: ITechs[];
+  works: ITechs[];
+  created_at: string;
+  updated_at: string;
+  avatar_url?: string;
+}
+
+interface IContextProvProps {
+  toRegister: () => void;
+  loginData: (data: ILoginDataProps) => void;
+  registerData: (data: IRegisterDataProps) => void;
+  userData: IUserData;
+}
+
+const UserContextProvider = ({ children }: IUserContextProvProps) => {
   const navigate = useNavigate();
 
   const { setTechs } = useContext(TechsContext);
 
   const [dataUserID, setDataUserID] = useState(null);
   const [dataUserModule, setDataUserModule] = useState(null);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState<IUserData>({} as IUserData);
 
   useEffect(() => {
     const token = localStorage.getItem("@userToken");
@@ -38,7 +85,7 @@ const UserContextProvider = ({ children }) => {
     }
   }, []);
 
-  const loginData = (data) => {
+  const loginData = (data: ILoginDataProps) => {
     axios
       .post("https://kenziehub.herokuapp.com/sessions", data)
       .then((response) => {
@@ -55,7 +102,7 @@ const UserContextProvider = ({ children }) => {
       );
   };
 
-  const registerData = (data) => {
+  const registerData = (data: IRegisterDataProps) => {
     axios
       .post("https://kenziehub.herokuapp.com/users", data)
       .then((response) => {
@@ -77,7 +124,7 @@ const UserContextProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ toRegister, loginData, registerData, navigate, userData }}
+      value={{ toRegister, loginData, registerData, userData }}
     >
       {children}
     </UserContext.Provider>

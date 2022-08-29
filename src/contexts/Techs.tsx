@@ -1,16 +1,53 @@
 import axios from "axios";
-import { createContext, useEffect, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { toast } from "react-toastify";
+import { IUserContextProvProps } from "./UserContext";
 
-export const TechsContext = createContext({});
+export const TechsContext = createContext<ITechsContextProviderProps>(
+  {} as ITechsContextProviderProps
+);
 
-export const TechsProvider = ({ children }) => {
-  const [addTech, setAddTech] = useState({});
-  const [techs, setTechs] = useState([]);
+export interface ITechs {
+  id: string;
+  title: string;
+  status: string;
+  user?: {
+    id: string;
+  };
+  created_at: string;
+  updated_at: string;
+}
+
+// export interface ISetTechs {
+//   setTechs: Dispatch<SetStateAction<ITechs>>;
+// }
+
+export interface IDataPost {
+  title: string;
+  status: string;
+}
+
+interface ITechsContextProviderProps {
+  addTech: IDataPost;
+  setAddTech: Dispatch<SetStateAction<IDataPost>>;
+  techs: ITechs[];
+  setTechs: Dispatch<SetStateAction<ITechs[]>>;
+  sendTechs: (data: IDataPost) => void;
+}
+
+export const TechsProvider = ({ children }: IUserContextProvProps) => {
+  const [addTech, setAddTech] = useState<IDataPost>({} as IDataPost);
+  const [techs, setTechs] = useState<ITechs[]>([]);
 
   const token = localStorage.getItem("@userToken");
 
-  const sendTechs = (data) => {
+  const sendTechs = (data: IDataPost) => {
     axios
       .post("https://kenziehub.herokuapp.com/users/techs", data, {
         headers: {

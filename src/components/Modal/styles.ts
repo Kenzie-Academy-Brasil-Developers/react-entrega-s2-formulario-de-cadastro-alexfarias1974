@@ -1,7 +1,11 @@
 import styled from "styled-components";
 
+interface IDivModalProps {
+  showModal: boolean;
+}
+
 export const DivModal = styled.div`
-  display: ${({ showModal }) => (showModal ? "flex" : "none")};
+  display: ${({ showModal }: IDivModalProps) => (showModal ? "flex" : "none")};
   position: absolute;
   width: 100%;
   height: 100%;

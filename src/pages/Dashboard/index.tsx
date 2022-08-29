@@ -9,16 +9,17 @@ import { H2 } from "../../components/Titles/styles";
 import { UserContext } from "../../contexts/UserContext";
 import Modal from "../../components/Modal";
 import { TechsContext } from "../../contexts/Techs";
-import Vector from "../../../src/Vector.png";
 import { UlTechs } from "../../components/Techs/styles";
+import { useNavigate } from "react-router-dom";
 
 const DashboardPage = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
-  const { userData, navigate } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
   const { techs } = useContext(TechsContext);
 
+  const navigate = useNavigate();
   const logout = () => {
     window.localStorage.clear();
     navigate("/", { replace: true });
@@ -53,7 +54,7 @@ const DashboardPage = () => {
               <li>
                 <span>{item.title}</span>
                 <p>{item.status}</p>
-                <img src={Vector} alt="" />
+                <img src="./Vector.png" alt="" />
               </li>
             ))}
           </UlTechs>

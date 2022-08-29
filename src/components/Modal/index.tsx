@@ -10,17 +10,22 @@ import { Button } from "../Button/styles";
 import { FormTech } from "../FormTech";
 import { Span } from "../CloseModal";
 import { DivModal } from "./styles";
-import { TechsContext } from "../../contexts/Techs";
-import { useContext } from "react";
+import { TechsContext, IDataPost } from "../../contexts/Techs";
+import { useContext, Dispatch, SetStateAction } from "react";
 
-const Modal = ({ showModal, setShowModal }) => {
-  const { setAddTech, sendTechs, getTechs } = useContext(TechsContext);
+interface IModalProps {
+  showModal: boolean;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+}
+
+const Modal = ({ showModal, setShowModal }: IModalProps) => {
+  const { setAddTech, sendTechs } = useContext(TechsContext);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<IDataPost>({
     resolver: yupResolver(schemaAddData),
   });
 
@@ -28,10 +33,9 @@ const Modal = ({ showModal, setShowModal }) => {
     setShowModal(false);
   };
 
-  const onSubmitFn = (data) => {
+  const onSubmitFn = (data: IDataPost) => {
     setAddTech(data);
     sendTechs(data);
-    getTechs();
     closeModal();
   };
 
@@ -50,10 +54,10 @@ const Modal = ({ showModal, setShowModal }) => {
             placeholder="Digite aqui uma linguagem..."
             {...register("title")}
           />
-          <P>{errors.tecnologia?.message}</P>
+          <P>{errors.title?.message}</P>
 
           <Label htmlFor="status">Selecionar Status</Label>
-          <Select type="text" id="status" {...register("status")}>
+          <Select id="status" {...register("status")}>
             <option>Iniciante</option>
             <option>Intermediário</option>
             <option>Avançado</option>
